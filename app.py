@@ -8,7 +8,7 @@ from pages import dashboard, editor
 st.set_page_config(
     page_title="Universal Mongo Manager | Indranil",
     page_icon="🛡️", # You can change this to 📝 or any other emoji
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="expanded"
 )
 
@@ -32,22 +32,28 @@ if remaining_time <= 0 and st.session_state.get("verified"):
 st.markdown(
     """
     <style>
-    /* 1. HIDE TOP-RIGHT TOOLBAR (GitHub, Fork, Profile icons) */
-    [data-testid="stToolbarActions"] { display: none !important; }
-    [data-testid="stDecoration"] { display: none !important; }
+    /* 1. HIDE TOP-RIGHT ACTIONS ONLY */
+    /* This hides the GitHub, Fork, and Profile icons without killing the header */
+    [data-testid="stToolbarActions"] { 
+        display: none !important; 
+    }
     
-    /* 2. HIDE MAIN MENU & FOOTER */
-    #MainMenu { visibility: hidden; } 
-    footer { visibility: hidden; } 
-
-    /* IMPORTANT: Make header transparent instead of hidden so sidebar button works */
-    header { 
-        background-color: rgba(0,0,0,0) !important; 
-        border-bottom: none !important;
+    /* Hide the 'decoration' line at the top */
+    [data-testid="stDecoration"] { 
+        display: none !important; 
     }
 
-    /* 3. HIDE THE STATUS WIDGET (Manage App button) */
+    /* 2. HIDE MAIN MENU & FOOTER & STATUS */
+    #MainMenu { visibility: hidden; } 
+    footer { visibility: hidden; } 
     div[data-testid="stStatusWidget"] { visibility: hidden; } 
+
+    /* 3. FIX THE HEADER - DO NOT USE visibility: hidden */
+    /* We make it transparent so the sidebar toggle (hamburger icon) stays visible and clickable */
+    header {
+        background-color: rgba(0,0,0,0) !important;
+        color: white !important;
+    }
 
     /* 4. SECURE PASSWORD FIELDS */
     div[data-testid="stTextInput"] button { display: none !important; }

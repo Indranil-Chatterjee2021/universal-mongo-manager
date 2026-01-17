@@ -5,7 +5,12 @@ from utils.ui import add_footer
 from pages import dashboard, editor
 
 # 1. Page Config
-st.set_page_config(page_title="Mongo Manager", layout="wide")
+st.set_page_config(
+    page_title="Universal Mongo Manager | Indranil",
+    page_icon="🛡️", # You can change this to 📝 or any other emoji
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # 2. Session Timeout Configuration
 TIMEOUT_SECONDS = 600  
@@ -23,10 +28,28 @@ if remaining_time <= 0 and st.session_state.get("verified"):
     st.warning("Session expired due to inactivity.")
     st.rerun()
 
-# 3. Secure CSS (Main app styles)
+# 3. Secure & White-Label CSS
 st.markdown(
     """
     <style>
+    /* 1. HIDE TOP-RIGHT TOOLBAR (GitHub, Fork, Profile icons) */
+    [data-testid="stToolbarActions"] { display: none !important; }
+    [data-testid="stDecoration"] { display: none !important; }
+    
+    /* 2. HIDE MAIN MENU & FOOTER */
+    #MainMenu { visibility: hidden; } 
+    footer { visibility: hidden; } 
+
+    /* IMPORTANT: Make header transparent instead of hidden so sidebar button works */
+    header { 
+        background-color: rgba(0,0,0,0) !important; 
+        border-bottom: none !important;
+    }
+
+    /* 3. HIDE THE STATUS WIDGET (Manage App button) */
+    div[data-testid="stStatusWidget"] { visibility: hidden; } 
+
+    /* 4. SECURE PASSWORD FIELDS */
     div[data-testid="stTextInput"] button { display: none !important; }
     button[aria-label="Show password"], button[aria-label="Hide password"] { display: none !important; }
     input[type="password"] { padding-right: 1rem !important; }
@@ -37,6 +60,8 @@ st.markdown(
         opacity: 1 !important;
         cursor: not-allowed !important;
     }
+
+    /* 5. TIMER TEXT */
     .timer-text { font-size: 0.8rem; color: #ff4b4b; text-align: center; margin-bottom: 10px; }
     </style>
     """,
@@ -97,5 +122,5 @@ if st.session_state.get("verified") and "uri_field" in st.session_state:
     elif page == "Data Editor":
         editor.show(current_uri)
 
-# 5. USE THE FUNCTION
+# 5. GLOBAL STICKY FOOTER
 add_footer("Indranil Chatterjee")
